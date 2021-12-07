@@ -1,5 +1,5 @@
-music1="";
-music2="";
+song1="";
+song2="";
 song1_status="";
 song2_status="";
 scoreRightWrist=0;
@@ -10,8 +10,8 @@ rwx=0;
 rwy=0;
 function preload()
 {
-    music1=loadSound("angfjkahefvb.mp3");
-    music2=loadSound("music2.mp3");
+    song1=loadSound("angfjkahefvb.mp3");
+    song2=loadSound("music2.mp3");
 }
 function setup()
 {
@@ -28,11 +28,32 @@ function modelLoaded(){
 
 function draw()
 {
-    image(video,0,0,600,500)
+    image(video,0,0,600,500);
+    song1_status=song1.isPlaying();
+    song2_status=song2.isPlaying();
+    fill("#98c1d9");
+    stroke("#293241");
+    if(scoreRightWrist>0.2){
+        circle(rwx,rwy,30);
+        song2.stop();
+        if(song1_status==false){
+    song1.play();
+        }
+    
+        if(scoreLeftWrist>0.2){
+            circle(lwx,lwy,30);
+            song1.stop();
+            if(song2_status==false){
+        song2.play();
+            }
+        }}
 }
-function gotPoses(){
+function gotPoses(results){
     if(results.length>0){
         console.log(results)
+scoreRightWrist=results[0].pose.keypoints[10].score;
+scoreLeftWrist=results[0].pose.keypoints[9].score;
+
 lwx=results[0].pose.leftWrist.x;
 lwy=results[0].pose.leftWrist.y;
 console.log("Left Wrist X:"+lwx+"Left Wrist Y:"+lwy+".");
